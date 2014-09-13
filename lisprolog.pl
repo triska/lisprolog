@@ -4,7 +4,7 @@
     Public domain code.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-:- set_prolog_flag(double_quotes, codes).
+:- initialization(set_prolog_flag(double_quotes, codes)).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Parsing
