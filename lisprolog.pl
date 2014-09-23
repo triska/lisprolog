@@ -10,7 +10,7 @@
    Parsing
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-parsing(String, Expr) :- phrase(expressions(Expr), String).
+parsing(String, Exprs) :- phrase(expressions(Exprs), String).
 
 expressions([E|Es]) -->
     ws, expression(E), ws,
