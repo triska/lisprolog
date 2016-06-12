@@ -1,6 +1,23 @@
 
-## Interpreter for a simple Lisp, written in Prolog.
+## Interpreter for a simple Lisp, written in Prolog
 
+Some online books show how to implement simple "Prolog" engines in
+Lisp. These engines typically assume a representation of Prolog
+programs that is convenient from a Lisp perspective, and can't even
+parse a single proper Prolog term. Instead, they require you to
+manually translate Prolog programs to Lisp forms that are no longer
+valid Prolog syntax. With this approach, implementing a simple "Lisp"
+in Prolog is even easier ("Lisp in Prolog in zero lines"): Manually
+translate each Lisp function to a Prolog predicate with one additional
+argument to hold the original function's return value. Done. This is
+possible since a function is a special case of a relation, and
+functional programming is a restricted form of logic programming.
+
+Here is a bit beyond that: [**lisprolog.pl**](lisprolog.pl).
+
+These 160 lines of Prolog code give you an interpreter for a simple
+Lisp, *including* a parser to let you write Lisp code in its
+natural&nbsp;form.
 
 Sample queries, using SWI-Prolog:
 
