@@ -1,10 +1,10 @@
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     Lisprolog -- Interpreter for a simple Lisp. Written in Prolog.
-    Written Nov. 26th, 2006 by Markus Triska (triska@gmx.at).
+    Written Nov. 26th, 2006 by Markus Triska (triska@metalevel.at).
     Public domain code.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-:- initialization(set_prolog_flag(double_quotes, codes)).
+:- set_prolog_flag(double_quotes, chars).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Parsing
@@ -18,29 +18,29 @@ expressions([E|Es]) -->
     expressions(Es).
 expressions([]) --> [].
 
-ws --> [W], { code_type(W, space) }, ws.
+ws --> [W], { char_type(W, space) }, ws.
 ws --> [].
 
 % A number N is represented as n(N), a symbol S as s(S).
 
-expression(s(A))         --> symbol(Cs), { atom_codes(A, Cs) }.
-expression(n(N))         --> number(Cs), { number_codes(N, Cs) }.
+expression(s(A))         --> symbol(Cs), { atom_chars(A, Cs) }.
+expression(n(N))         --> number(Cs), { number_chars(N, Cs) }.
 expression(List)         --> "(", expressions(List), ")".
 expression([s(quote),Q]) --> "'", expression(Q).
 
 number([D|Ds]) --> digit(D), number(Ds).
 number([D])    --> digit(D).
 
-digit(D) --> [D], { code_type(D, digit) }.
+digit(D) --> [D], { char_type(D, digit) }.
 
 symbol([A|As]) -->
     [A],
-    { memberchk(A, "+/-*><=") ; code_type(A, alpha) },
+    { memberchk(A, "+/-*><=") ; char_type(A, alpha) },
     symbolr(As).
 
 symbolr([A|As]) -->
     [A],
-    { memberchk(A, "+/-*><=") ; code_type(A, alnum) },
+    { memberchk(A, "+/-*><=") ; char_type(A, alnum) },
     symbolr(As).
 symbolr([]) --> [].
 
