@@ -7,7 +7,7 @@
 :- set_prolog_flag(double_quotes, chars).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   Parsing
+   Parsing. See     https://www.metalevel.at/prolog/dcg      for more.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 parsing(String, Exprs) :- phrase(expressions(Exprs), String).
