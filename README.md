@@ -1,5 +1,5 @@
 
-## Interpreter for a simple Lisp, written in Prolog
+# Interpreter for a simple Lisp, written in Prolog
 
 Some online books show how to implement simple "Prolog" engines in
 Lisp. These engines typically assume a representation of Prolog
@@ -13,99 +13,122 @@ argument to hold the original function's return value. Done. This is
 possible since a function is a special case of a relation, and
 functional programming is a restricted form of logic programming.
 
-Here is a bit beyond that: [**lisprolog.pl**](lisprolog.pl).
+Here is a bit beyond that: [**`lisprolog.pl`**](lisprolog.pl)
 
 These 160 lines of Prolog code give you an interpreter for a simple
 Lisp, *including* a parser to let you write Lisp code in its
 natural&nbsp;form.
+
+Internally, Prolog [**Definite Clause
+Grammars**](https://www.metalevel.at/prolog/dcg) are used for parsing
+Lisp&nbsp;code, and
+[semicontext&nbsp;notation](https://www.metalevel.at/prolog/dcg#semicontext)
+is used to <i>implicitly</i> thread through certain arguments. This
+Prolog&nbsp;feature is very similar to Haskell's&nbsp;<i>monads</i>.
+
+Read [**The Power of Prolog**](https://www.metalevel.at/prolog) for
+more information about&nbsp;Prolog.
+
 
 Sample queries, using SWI-Prolog:
 
 
 Append:
 
-    ?- run("
+<pre>
+?- run("
 
-        (defun append (x y)
-          (if x
-              (cons (car x) (append (cdr x) y))
-            y))
+    (defun append (x y)
+      (if x
+          (cons (car x) (append (cdr x) y))
+        y))
 
-        (append '(a b) '(3 4 5))
+    (append '(a b) '(3 4 5))
 
-        ", V).
-    %@ V = [append, [a, b, 3, 4, 5]].
-
+    ", V).
+<b>V = [append, [a, b, 3, 4, 5]].</b>
+</pre>
 
 Fibonacci, naive version:
 
-    ?- time(run("
 
-        (defun fib (n)
-          (if (= 0 n)
-              0
-            (if (= 1 n)
-                1
-              (+ (fib (- n 1)) (fib (- n 2))))))
-        (fib 24)
+<pre>
+?- time(run("
 
-        ", V)).
-    %@ % 12,857,193 inferences, 2.724 CPU
-    %@ V = [fib, 46368].
+    (defun fib (n)
+      (if (= 0 n)
+          0
+        (if (= 1 n)
+            1
+          (+ (fib (- n 1)) (fib (- n 2))))))
+    (fib 24)
 
+    ", V)).
+<b>% 12,857,193 inferences, 2.724 CPU
+V = [fib, 46368].</b>
+</pre>
 
 Fibonacci, accumulating version:
 
+<pre>
+?- time(run("
 
-    ?- time(run("
+    (defun fib (n)
+      (if (= 0 n) 0 (fib1 0 1 1 n)))
 
-        (defun fib (n)
-          (if (= 0 n) 0 (fib1 0 1 1 n)))
+    (defun fib1 (f1 f2 i to)
+      (if (= i to)
+          f2
+        (fib1 f2 (+ f1 f2) (+ i 1) to)))
 
-        (defun fib1 (f1 f2 i to)
-          (if (= i to)
-              f2
-            (fib1 f2 (+ f1 f2) (+ i 1) to)))
+    (fib 250)
 
-        (fib 250)
-
-        ", V)).
-    %@ % 55,773 inferences, 0.018 CPU
-    %@ V = [fib, fib1, 7896325826131730509282738943634332893686268675876375].
+    ", V)).
+<b>% 55,773 inferences, 0.018 CPU
+V = [fib, fib1, 7896325826131730509282738943634332893686268675876375].</b>
+</pre>
 
 
 Fibonacci, iterative version:
 
 
-    ?- time(run("
+<pre>
+?- time(run("
 
-        (defun fib (n)
-          (setq f (cons 0 1))
-          (setq i 0)
-          (while (< i n)
-            (setq f (cons (cdr f) (+ (car f) (cdr f))))
-            (setq i (+ i 1)))
-          (car f))
+    (defun fib (n)
+      (setq f (cons 0 1))
+      (setq i 0)
+      (while (< i n)
+        (setq f (cons (cdr f) (+ (car f) (cdr f))))
+        (setq i (+ i 1)))
+      (car f))
 
-        (fib 350)
+    (fib 350)
 
-        ", V)).
-    %@ % 48,749 inferences, 0.012 CPU
-    %@ V = [fib, 6254449428820551641549772190170184190608177514674331726439961915653414425].
+    ", V)).
+<b>% 48,749 inferences, 0.012 CPU
+V = [fib, 6254449428820551641549772190170184190608177514674331726439961915653414425].</b>
+</pre>
 
 
 Higher-order programming and eval:
 
-    ?- run("
+<pre>
+?- run("
 
-        (defun map (f xs)
-          (if xs
-              (cons (eval (list f (car xs))) (map f (cdr xs)))
-            ()))
+    (defun map (f xs)
+      (if xs
+          (cons (eval (list f (car xs))) (map f (cdr xs)))
+        ()))
 
-        (defun plus1 (x) (+ 1 x))
+    (defun plus1 (x) (+ 1 x))
 
-        (map 'plus1 '(1 2 3))
+    (map 'plus1 '(1 2 3))
 
-        ", V).
-    %@ V = [map, plus1, [2, 3, 4]].
+    ", V).
+<b>V = [map, plus1, [2, 3, 4]].</b>
+</pre>
+
+More information about this interpreter is available at:
+
+[**https://www.metalevel.at/lisprolog/**](https://www.metalevel.at/lisprolog/)
