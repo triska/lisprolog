@@ -15,7 +15,7 @@ functional programming is a restricted form of logic programming.
 
 Here is a bit beyond that: [**`lisprolog.pl`**](lisprolog.pl)
 
-These 160 lines of Prolog code give you an interpreter for a simple
+These 165 lines of Prolog code give you an interpreter for a simple
 Lisp, *including* a parser to let you write Lisp code in its
 natural&nbsp;form.
 
@@ -30,7 +30,7 @@ Read [**The Power of Prolog**](https://www.metalevel.at/prolog) for
 more information about&nbsp;Prolog.
 
 
-Sample queries, using SWI-Prolog:
+Sample queries, using Scryer Prolog:
 
 
 Append:
@@ -46,7 +46,7 @@ Append:
     (append '(a b) '(3 4 5))
 
     ", V).
-<b>V = [append, [a, b, 3, 4, 5]].</b>
+<b>   V = [append,[a,b,3,4,5]]</b>
 </pre>
 
 Fibonacci, naive version:
@@ -61,11 +61,12 @@ Fibonacci, naive version:
         (if (= 1 n)
             1
           (+ (fib (- n 1)) (fib (- n 2))))))
-    (fib 24)
+    (fib 15)
 
     ", V)).
-<b>% 12,857,193 inferences, 2.724 CPU
-V = [fib, 46368].</b>
+
+<b>   % CPU time: 2.541 seconds
+   V = [fib,610]</b>
 </pre>
 
 Fibonacci, accumulating version:
@@ -84,8 +85,9 @@ Fibonacci, accumulating version:
     (fib 250)
 
     ", V)).
-<b>% 55,773 inferences, 0.018 CPU
-V = [fib, fib1, 7896325826131730509282738943634332893686268675876375].</b>
+
+<b>   % CPU time: 0.221 seconds
+   V = [fib,fib1,7896325826131730509282738943634332893686268675876375]</b>
 </pre>
 
 
@@ -106,8 +108,9 @@ Fibonacci, iterative version:
     (fib 350)
 
     ", V)).
-<b>% 48,749 inferences, 0.012 CPU
-V = [fib, 6254449428820551641549772190170184190608177514674331726439961915653414425].</b>
+
+<b>   % CPU time: 0.231 seconds
+   V = [fib,6254449428820551641549772190170184190608177514674331726439961915653414425]</b>
 </pre>
 
 
@@ -126,7 +129,7 @@ Higher-order programming and eval:
     (map 'plus1 '(1 2 3))
 
     ", V).
-<b>V = [map, plus1, [2, 3, 4]].</b>
+<b>   V = [map,plus1,[2,3,4]]</b>
 </pre>
 
 More information about this interpreter is available at:
