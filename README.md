@@ -46,7 +46,7 @@ Append:
     (append '(a b) '(3 4 5))
 
     ", V).
-<b>   V = [append,[a,b,3,4,5]]</b>
+<b>   V = [append,[a,b,3,4,5]].</b>
 </pre>
 
 Fibonacci, naive version:
@@ -66,7 +66,7 @@ Fibonacci, naive version:
     ", V)).
 
 <b>   % CPU time: 2.541 seconds
-   V = [fib,610]</b>
+   V = [fib,610].</b>
 </pre>
 
 Fibonacci, accumulating version:
@@ -87,7 +87,7 @@ Fibonacci, accumulating version:
     ", V)).
 
 <b>   % CPU time: 0.221 seconds
-   V = [fib,fib1,7896325826131730509282738943634332893686268675876375]</b>
+   V = [fib,fib1,7896325826131730509282738943634332893686268675876375].</b>
 </pre>
 
 
@@ -110,7 +110,7 @@ Fibonacci, iterative version:
     ", V)).
 
 <b>   % CPU time: 0.231 seconds
-   V = [fib,6254449428820551641549772190170184190608177514674331726439961915653414425]</b>
+   V = [fib,6254449428820551641549772190170184190608177514674331726439961915653414425].</b>
 </pre>
 
 
@@ -129,7 +129,7 @@ Higher-order programming and eval:
     (map 'plus1 '(1 2 3))
 
     ", V).
-<b>   V = [map,plus1,[2,3,4]]</b>
+<b>   V = [map,plus1,[2,3,4]].</b>
 </pre>
 
 More information about this interpreter is available at:
