@@ -33,103 +33,102 @@ more information about&nbsp;Prolog.
 Sample queries, using Scryer Prolog:
 
 
-Append:
+<b>Append</b>:
 
 <pre>
-?- run("
+?- run("                                                         \
+                                                                 \
+    (defun append (x y)                                          \
+      (if x                                                      \
+          (cons (car x) (append (cdr x) y))                      \
+        y))                                                      \
+                                                                 \
+    (append '(a b) '(3 4 5))                                     \
+                                                                 \
+    ", Vs).
+<b>   Vs = [append,[a,b,3,4,5]].</b>
+    </pre>
 
-    (defun append (x y)
-      (if x
-          (cons (car x) (append (cdr x) y))
-        y))
+<br>
+<b>Fibonacci, naive version:</b>
 
-    (append '(a b) '(3 4 5))
-
-    ", V).
-<b>   V = [append,[a,b,3,4,5]].</b>
+<pre>
+?- time(run("                                                    \
+                                                                 \
+    (defun fib (n)                                               \
+      (if (= 0 n)                                                \
+          0                                                      \
+        (if (= 1 n)                                              \
+            1                                                    \
+          (+ (fib (- n 1)) (fib (- n 2))))))                     \
+    (fib 24)                                                     \
+                                                                 \
+    ", Vs)).
+<b>   % CPU time: 6.414s
+   Vs = [fib,46368].</b>
 </pre>
 
-Fibonacci, naive version:
-
+<br>
+<b>Fibonacci, accumulating version:</b>
 
 <pre>
-?- time(run("
+?- time(run("                                                    \
+                                                                 \
+    (defun fib (n)                                               \
+      (if (= 0 n) 0 (fib1 0 1 1 n)))                             \
+                                                                 \
+    (defun fib1 (f1 f2 i to)                                     \
+      (if (= i to)                                               \
+          f2                                                     \
+        (fib1 f2 (+ f1 f2) (+ i 1) to)))                         \
+                                                                 \
+    (fib 250)                                                    \
+                                                                 \
+    ", Vs)).
 
-    (defun fib (n)
-      (if (= 0 n)
-          0
-        (if (= 1 n)
-            1
-          (+ (fib (- n 1)) (fib (- n 2))))))
-    (fib 15)
+<b>   % CPU time: 0.020s
+   Vs = [fib,fib1,7896325826131730509282738943634332893686268675876375].</b>
+    </pre>
 
-    ", V)).
+<br>
+<b>Fibonacci, iterative version:</b>
 
-<b>   % CPU time: 2.541 seconds
-   V = [fib,610].</b>
+<pre>
+?- time(run("                                                    \
+                                                                 \
+    (defun fib (n)                                               \
+      (setq f (cons 0 1))                                        \
+      (setq i 0)                                                 \
+      (while (< i n)                                             \
+        (setq f (cons (cdr f) (+ (car f) (cdr f))))              \
+        (setq i (+ i 1)))                                        \
+      (car f))                                                   \
+                                                                 \
+    (fib 350)                                                    \
+                                                                 \
+    ", Vs)).
+
+<b>   % CPU time: 0.021s
+   Vs = [fib,6254449428820551641549772190170184190608177514674331726439961915653414425].</b>
 </pre>
 
-Fibonacci, accumulating version:
+<br>
+<b>Higher-order programming and eval:</b>
 
 <pre>
-?- time(run("
-
-    (defun fib (n)
-      (if (= 0 n) 0 (fib1 0 1 1 n)))
-
-    (defun fib1 (f1 f2 i to)
-      (if (= i to)
-          f2
-        (fib1 f2 (+ f1 f2) (+ i 1) to)))
-
-    (fib 250)
-
-    ", V)).
-
-<b>   % CPU time: 0.221 seconds
-   V = [fib,fib1,7896325826131730509282738943634332893686268675876375].</b>
-</pre>
-
-
-Fibonacci, iterative version:
-
-
-<pre>
-?- time(run("
-
-    (defun fib (n)
-      (setq f (cons 0 1))
-      (setq i 0)
-      (while (< i n)
-        (setq f (cons (cdr f) (+ (car f) (cdr f))))
-        (setq i (+ i 1)))
-      (car f))
-
-    (fib 350)
-
-    ", V)).
-
-<b>   % CPU time: 0.231 seconds
-   V = [fib,6254449428820551641549772190170184190608177514674331726439961915653414425].</b>
-</pre>
-
-
-Higher-order programming and eval:
-
-<pre>
-?- run("
-
-    (defun map (f xs)
-      (if xs
-          (cons (eval (list f (car xs))) (map f (cdr xs)))
-        ()))
-
-    (defun plus1 (x) (+ 1 x))
-
-    (map 'plus1 '(1 2 3))
-
-    ", V).
-<b>   V = [map,plus1,[2,3,4]].</b>
+?- run("                                                         \
+                                                                 \
+    (defun map (f xs)                                            \
+      (if xs                                                     \
+          (cons (eval (list f (car xs))) (map f (cdr xs)))       \
+        ()))                                                     \
+                                                                 \
+    (defun plus1 (x) (+ 1 x))                                    \
+                                                                 \
+    (map 'plus1 '(1 2 3))                                        \
+                                                                 \
+    ", Vs).
+<b>   Vs = [map,plus1,[2,3,4]].</b>
 </pre>
 
 More information about this interpreter is available at:
